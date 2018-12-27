@@ -1,6 +1,12 @@
 # docker_hyperion
 Hyperion Ambilight server in a Docker Container
 
+#### Open Problems:
+This image is not working with the docker bridge mode. It always disconnects from kodi.
+If you use --network host without the Port formwarding it works.
+I need to check on this!!
+
+
 #### What is it for?:
 I like to have most of my services in their own docker containers. As I could not find a fitting container I startet building one myself. This is the first image i have ever done.
 The goal is to provide a standalone service for the hyperion ambilight. This way I can have multiple picture sources (Kodi instances) running on different computers and cann still use the same Ambilight.
@@ -24,6 +30,16 @@ Kodi (Addon) --> Hyperion Server (in Docker) --> Arduino on (/dev/ttyUSB1) --> L
 
 #### How to use:
 
+working way (host network!)
+```
+docker run -d \
+  --name="Hyperion" \
+  -v /etc/hyperion:/etc/hyperion:ro \
+  --device=/dev/ttyUSB1:/dev/ttyUSB1 
+  --network host
+  fred92/hyperion:latest
+```
+Correct way, notfully working (random disconnects)
 ```
 docker run -d \
   --name="Hyperion" \
